@@ -1,8 +1,9 @@
 import { useState, type FormEvent } from 'react'
 import { Link, NavLink, Route, Routes } from 'react-router-dom'
-import { Boxes, ExternalLink, Image as ImageIcon, LayoutDashboard, LogOut, Receipt, Settings, Tags } from 'lucide-react'
+import { Boxes, ExternalLink, FlaskConical, Image as ImageIcon, LayoutDashboard, LogOut, Receipt, Settings, Tags } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
-import { supabaseConfigured } from '../lib/supabase'
+import { isDemo, supabaseConfigured } from '../lib/supabase'
+import DemoLinksAdmin from './DemoLinksAdmin'
 import { useSEO } from '../lib/hooks'
 import { SetupNotice } from '../components/ui'
 import Dashboard from './Dashboard'
@@ -15,8 +16,8 @@ import OrdersAdmin from './OrdersAdmin'
 
 function Login() {
   const { signIn } = useAuth()
-  const [email, setEmail] = useState('')
-  const [pw, setPw] = useState('')
+  const [email, setEmail] = useState(isDemo ? 'demo@jpstore.com' : '')
+  const [pw, setPw] = useState(isDemo ? 'demo1234' : '')
   const [err, setErr] = useState('')
   const [busy, setBusy] = useState(false)
   const submit = async (e: FormEvent) => {
@@ -30,6 +31,7 @@ function Login() {
       <form onSubmit={submit} className="card w-full max-w-sm space-y-4 p-8">
         <img src="/logo.png" alt="JP STORE" className="mx-auto h-16 w-auto" />
         <h1 className="text-center font-display text-xl uppercase">Painel administrativo</h1>
+        {isDemo && <p className="rounded bg-amber-300/15 p-3 text-center text-xs text-amber-200">Painel de <strong>demonstração</strong>. Os dados de acesso já estão preenchidos: é só clicar em Entrar.</p>}
         <div><label className="label" htmlFor="em">E-mail</label><input id="em" type="email" required className="input" autoComplete="username" value={email} onChange={e => setEmail(e.target.value)} /></div>
         <div><label className="label" htmlFor="pw">Senha</label><input id="pw" type="password" required className="input" autoComplete="current-password" value={pw} onChange={e => setPw(e.target.value)} /></div>
         {err && <p role="alert" className="text-sm text-red-400">{err}</p>}
@@ -47,6 +49,7 @@ const nav = [
   ['/admin/banners', 'Banners', ImageIcon, false],
   ['/admin/pedidos', 'Pedidos', Receipt, false],
   ['/admin/configuracoes', 'Configurações', Settings, false],
+  ['/admin/demo', 'Links de demo', FlaskConical, false],
 ] as const
 
 // O painel mantém o tema escuro, independente do tema claro da loja.
@@ -79,7 +82,7 @@ function AdminInner() {
           <div><p className="font-display text-sm leading-none">JP STORE</p><p className="text-[10px] uppercase tracking-widest text-mute">Admin</p></div>
         </div>
         <nav className="flex gap-1 overflow-x-auto px-3 pb-3 md:flex-col md:overflow-visible md:pb-0">
-          {nav.map(([to, label, Icon, end]) => (
+          {nav.filter(([to]) => !(isDemo && to === '/admin/demo')).map(([to, label, Icon, end]) => (
             <NavLink key={to} to={to} end={end}
               className={({ isActive }) => `flex shrink-0 items-center gap-3 px-3 py-2.5 text-sm transition-colors ${isActive ? 'bg-white text-black' : 'text-white/70 hover:bg-white/5 hover:text-white'}`}>
               <Icon size={16} /> {label}
@@ -105,6 +108,7 @@ function AdminInner() {
           <Route path="banners" element={<BannersAdmin />} />
           <Route path="pedidos" element={<OrdersAdmin />} />
           <Route path="configuracoes" element={<SettingsAdmin />} />
+          {!isDemo && <Route path="demo" element={<DemoLinksAdmin />} />}
         </Routes>
       </main>
     </div>

@@ -14,6 +14,17 @@ E-commerce de moda masculina streetwear — React + TypeScript + Vite + Tailwind
 5. `npm install` e `npm run dev` → http://localhost:5173
 6. Acesse `/admin`, entre e: configure o **número do WhatsApp** (Configurações), cadastre cores/tamanhos, banners e produtos.
 
+## Demonstração para o dono (link de uso único)
+
+A rota `/demo` abre uma versão completa da loja e do painel com **produtos de exemplo**, guardados só no navegador de quem testa (nada altera a loja real).
+
+1. Rode `supabase/demo_links.sql` uma vez no SQL Editor do Supabase.
+2. Em `/admin` > **Links de demo**, clique em *Gerar link* e envie o link `.../demo/acesso/<código>`.
+3. O **primeiro aparelho** que abrir o link fica com o acesso; em qualquer outro aparelho ele mostra "já utilizado". Você pode cancelar um link no mesmo painel.
+4. Dentro do demo, o botão **DEMO** restaura os exemplos ou abre o painel de teste (login já preenchido).
+
+Não abra o link antes de enviar: abrir consome o acesso.
+
 ## Observações
 
 - Nenhum produto, estoque ou número de WhatsApp vem pré-cadastrado.

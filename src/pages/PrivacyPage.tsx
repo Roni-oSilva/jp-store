@@ -46,9 +46,9 @@ export default function PrivacyPage() {
           <List items={[
             <><strong>Dados do pedido:</strong> nome completo, telefone/WhatsApp, cidade, bairro, endereço (quando a opção é entrega), forma de recebimento, observações e os produtos escolhidos (tamanho, cor, quantidade e valores).</>,
             <><strong>Sacola de compras:</strong> os itens que você adiciona ficam salvos apenas no seu próprio navegador (armazenamento local), para você não perder a sacola ao fechar a página.</>,
-            <><strong>Dados técnicos:</strong> como em qualquer site, seu navegador envia informações como endereço IP e tipo de dispositivo aos servidores que entregam a página (hospedagem e fontes).</>,
-            <><strong>Conta de administrador:</strong> e-mail e senha de quem gerencia a loja (não se aplica a clientes — não é preciso criar conta para comprar).</>,
+            <><strong>Dados técnicos:</strong> como em qualquer site, seu navegador envia informações como endereço IP e tipo de dispositivo aos servidores que entregam a página.</>,
           ]} />
+          <p>Não é preciso criar conta para comprar.</p>
           <p>Não coletamos dados de cartão, não processamos pagamentos no site e não pedimos documentos como CPF.</p>
         </Block>
 
@@ -67,14 +67,8 @@ export default function PrivacyPage() {
         </Block>
 
         <Block n={5} title="Com quem compartilhamos">
-          <p>Usamos prestadores de serviço que processam dados em nosso nome:</p>
-          <List items={[
-            <><strong>WhatsApp (Meta):</strong> a mensagem do pedido é enviada por você ao WhatsApp da loja e segue as regras do próprio WhatsApp.</>,
-            <><strong>Supabase:</strong> banco de dados e armazenamento de imagens, onde ficam o catálogo e o registro dos pedidos, com acesso restrito a administradores.</>,
-            <><strong>Vercel:</strong> hospedagem do site.</>,
-            <><strong>Google Fonts:</strong> fornece as fontes de texto do site, o que pode expor seu endereço IP ao Google.</>,
-          ]} />
-          <p>Esses serviços podem armazenar dados em servidores fora do Brasil. Nesses casos, adotamos fornecedores que seguem padrões reconhecidos de segurança. Também podemos compartilhar dados quando a lei ou uma autoridade exigir.</p>
+          <p><strong>WhatsApp (Meta):</strong> a mensagem do pedido é enviada por você ao WhatsApp da loja e segue as regras do próprio WhatsApp.</p>
+          <p>Os prestadores de serviço que usamos para manter o site no ar podem armazenar dados em servidores fora do Brasil. Nesses casos, adotamos fornecedores que seguem padrões reconhecidos de segurança. Também podemos compartilhar dados quando a lei ou uma autoridade exigir.</p>
         </Block>
 
         <Block n={6} title="Cookies e armazenamento local">

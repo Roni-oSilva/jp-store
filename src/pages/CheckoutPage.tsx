@@ -6,14 +6,38 @@ import { useStore } from '../context/StoreContext'
 import { brl, onlyDigits } from '../lib/format'
 import { useSEO } from '../lib/hooks'
 import { registerOrder } from '../lib/api'
+import { isDemo, supabase } from '../lib/supabase'
 import { buildMessage, waLink, type Checkout } from '../lib/whatsapp'
 
 const EMPTY: Checkout = { name: '', phone: '', city: '', neighborhood: '', address: '', method: 'entrega', notes: '' }
 
+// Só no demo: permite informar um número de teste para o pedido abrir uma conversa de verdade.
+function DemoNumber({ onSaved }: { onSaved: () => void }) {
+  const [v, setV] = useState('')
+  const [err, setErr] = useState('')
+  const save = async () => {
+    const d = onlyDigits(v)
+    if (d.length < 12 || d.length > 13 || !d.startsWith('55')) { setErr('Use o formato 55 + DDD + número.'); return }
+    await supabase!.from('store_settings').upsert({ id: 1, whatsapp_number: d })
+    onSaved()
+  }
+  return (
+    <div className="space-y-2 rounded-2xl bg-amber-100 p-3 text-xs text-amber-900">
+      <p className="font-bold">Demo: informe um WhatsApp para o teste</p>
+      <p>Na loja real, o número vem do painel. Aqui, use o seu para ver a mensagem chegando.</p>
+      <div className="flex gap-2">
+        <input className="field !py-2.5 text-xs" inputMode="numeric" placeholder="55 + DDD + número" value={v} onChange={e => setV(e.target.value)} />
+        <button type="button" className="pill-dark !px-4 !py-2.5 text-xs" onClick={save}>Usar</button>
+      </div>
+      {err && <p className="font-semibold text-red-700">{err}</p>}
+    </div>
+  )
+}
+
 export default function CheckoutPage() {
   useSEO('Finalizar pedido')
   const { items, subtotal, discount, total, clear } = useCart()
-  const { settings } = useStore()
+  const { settings, reload } = useStore()
   const [f, setF] = useState<Checkout>(EMPTY)
   const [err, setErr] = useState('')
   const [sentLink, setSentLink] = useState('')
@@ -114,7 +138,8 @@ export default function CheckoutPage() {
           {discount > 0 && <div className="flex justify-between text-sm"><span className="text-sub">Desconto</span><span className="font-semibold text-emerald-600">-{brl(discount)}</span></div>}
           {delivery && <div className="flex justify-between text-sm"><span className="text-sub">Frete</span><span>{shipping > 0 ? brl(shipping) : settings.shipping_fee > 0 ? 'Grátis' : 'A combinar'}</span></div>}
           <div className="flex justify-between border-t border-black/5 pt-3 text-lg font-extrabold"><span>Total</span><span>{brl(grand)}</span></div>
-          {!number && <p className="text-xs font-semibold text-red-600">Número de WhatsApp da loja ainda não configurado.</p>}
+          {!number && isDemo && <DemoNumber onSaved={reload} />}
+          {!number && !isDemo && <p className="text-xs font-semibold text-red-600">Número de WhatsApp da loja ainda não configurado.</p>}
           <button type="submit" className="pill-dark w-full !py-4" disabled={!number}><MessageCircle size={17} /> Enviar pedido pelo WhatsApp</button>
           <p className="text-[11px] text-sub">O pedido será confirmado pela loja após o envio da mensagem. Não há pagamento online neste site.</p>
           <p className="text-[11px] text-sub">Ao enviar, você concorda com o uso dos seus dados para atender o pedido, conforme a <Link to="/privacidade" className="font-semibold underline">Política de Privacidade</Link>.</p>
