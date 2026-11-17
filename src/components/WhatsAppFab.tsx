@@ -10,7 +10,7 @@ export default function WhatsAppFab() {
     <a
       href={`https://wa.me/${n}?text=${encodeURIComponent('Olá! Vim pelo site da JP STORE.')}`}
       target="_blank" rel="noreferrer" aria-label="Falar no WhatsApp"
-      className="fixed bottom-5 right-5 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-xl transition-transform hover:scale-110"
+      className="fixed bottom-24 right-4 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-xl transition-transform hover:scale-110 md:bottom-6 md:right-6"
     >
       <MessageCircle size={26} />
     </a>

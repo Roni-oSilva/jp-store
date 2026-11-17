@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="16 -12 216 186" role="img" aria-label="JP STORE">
+  <g stroke="#0a0a0a" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" paint-order="stroke">
+    <g transform="translate(34 6) skewX(-10)">
+      <!-- J -->
+      <path fill="#ffffff" d="M58 60 H102 V130 Q102 164 66 164 H24 V134 H52 Q58 134 58 128 Z"/>
+      <!-- P -->
+      <path fill="#d7263d" fill-rule="evenodd" d="M112 60 H168 Q198 60 198 92 Q198 124 168 124 H154 V164 H112 Z M154 84 V100 H168 Q174 100 174 92 Q174 84 168 84 Z"/>
+    </g>
+    <!-- coroa -->
+    <path fill="#ffffff" d="M82 52 L74 22 L96 36 L118 8 L140 36 L162 22 L154 52 Z"/>
+    <circle cx="74" cy="20" r="5" fill="#ffffff"/>
+    <circle cx="118" cy="6" r="5" fill="#ffffff"/>
+    <circle cx="162" cy="20" r="5" fill="#ffffff"/>
+  </g>
+</svg>

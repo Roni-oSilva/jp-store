@@ -3,11 +3,25 @@
 @tailwind utilities;
 
 html { scroll-behavior: smooth; }
-body { @apply bg-ink text-white font-sans antialiased; }
-::selection { background: #fff; color: #000; }
+body { @apply bg-paper text-txt font-sans antialiased; }
+::selection { background: #313135; color: #fff; }
 
 @layer components {
   .container-x { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
+
+  /* ───── Loja (tema claro) ───── */
+  .pill { @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold transition-all duration-300 active:scale-[.98] disabled:cursor-not-allowed disabled:opacity-40; }
+  .pill-dark { @apply pill bg-charcoal text-white hover:bg-black; }
+  .pill-light { @apply pill border border-black/5 bg-white text-txt hover:bg-soft; }
+  .pill-ghost { @apply pill bg-white/10 text-white hover:bg-white/20; }
+  .field { @apply w-full rounded-2xl border border-black/5 bg-white px-4 py-3.5 text-sm text-txt placeholder:text-sub focus:outline-none focus:ring-2 focus:ring-charcoal/20; }
+  .flabel { @apply mb-1.5 block text-xs font-semibold text-sub; }
+  .surface { @apply rounded-3xl bg-white; }
+  .title { @apply font-extrabold tracking-tight; }
+  .chip { @apply inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-black/5 bg-white px-4 py-2.5 text-sm font-semibold text-txt transition-colors hover:bg-soft; }
+  .chip-on { @apply bg-charcoal text-white hover:bg-charcoal; }
+
+  /* ───── Painel admin (tema escuro, não alterar) ───── */
   .btn { @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 text-xs font-bold uppercase tracking-[0.18em] transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed; }
   .btn-light { @apply btn bg-white text-black hover:bg-neutral-200; }
   .btn-outline { @apply btn border border-white/40 text-white hover:bg-white hover:text-black; }
@@ -22,6 +36,36 @@ body { @apply bg-ink text-white font-sans antialiased; }
 .fade-up { animation: fadeUp .7s ease both; }
 @keyframes slideIn { from { transform: translateX(100%); } to { transform: none; } }
 .slide-in { animation: slideIn .3s ease both; }
-.skeleton { background: linear-gradient(90deg, #1c1c1e 25%, #2a2a2d 50%, #1c1c1e 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: none; } }
+.slide-up { animation: slideUp .3s ease both; }
+.skeleton { background: linear-gradient(90deg, #e9e9ed 25%, #f6f6f8 50%, #e9e9ed 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 1.5rem; }
 @keyframes shimmer { to { background-position: -200% 0; } }
+/* entrada ao rolar */
+.reveal { opacity: 0; transform: translateY(26px) scale(.98); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+.reveal.in { opacity: 1; transform: none; }
+/* troca de página */
+@keyframes pageIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+.page-in { animation: pageIn .5s cubic-bezier(.2,.7,.2,1) both; }
+/* flutuar (logo do hero) */
+@keyframes floaty { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-16px) rotate(2deg); } }
+.floaty { animation: floaty 7s ease-in-out infinite; }
+/* contador da sacola */
+@keyframes pop { 0% { transform: scale(.4); } 60% { transform: scale(1.35); } 100% { transform: scale(1); } }
+.pop { animation: pop .4s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.fade-in { animation: fadeIn .45s ease both; }
+/* faixa de texto em movimento */
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee { animation: marquee 32s linear infinite; }
+.marquee:hover { animation-play-state: paused; }
+/* brilho que passa no botão principal */
+@keyframes shine { from { transform: translateX(-120%) skewX(-20deg); } to { transform: translateX(260%) skewX(-20deg); } }
+.shine { position: relative; overflow: hidden; }
+.shine::after { content: ''; position: absolute; inset: 0 auto 0 0; width: 40%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent); transform: translateX(-120%) skewX(-20deg); }
+.shine:hover::after { animation: shine .9s ease; }
+/* órbita do visualizador 360° */
+@keyframes hint { 0%, 100% { transform: translateX(-10px); } 50% { transform: translateX(10px); } }
+.hint { animation: hint 1.6s ease-in-out infinite; }
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }

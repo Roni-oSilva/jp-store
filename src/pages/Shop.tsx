@@ -6,6 +6,7 @@ import { useAsync, useSEO } from '../lib/hooks'
 import { effectivePrice, hasPromo } from '../lib/format'
 import { useStore } from '../context/StoreContext'
 import ProductCard from '../components/ProductCard'
+import Reveal from '../components/Reveal'
 import { EmptyState, Notice, ProductGridSkeleton, SetupNotice, needsSetup } from '../components/ui'
 
 type Mode = 'novidades' | 'promocoes' | undefined
@@ -66,68 +67,66 @@ export default function Shop({ mode }: { mode?: Mode }) {
   const hasFilters = Boolean(size || color || min || max || q)
 
   const Filters = (
-    <div className="space-y-8">
-      {!mode && (
-        <div>
-          <p className="label">Categoria</p>
-          <div className="flex flex-col items-start gap-1.5">
-            <Link to="/loja" className={`text-sm ${!cat ? 'font-bold text-white' : 'text-white/60 hover:text-white'}`}>Todas</Link>
-            {categories.map(c => <Link key={c.id} to={`/categoria/${c.slug}`} className={`text-sm ${cat?.id === c.id ? 'font-bold text-white' : 'text-white/60 hover:text-white'}`}>{c.name}</Link>)}
-          </div>
-        </div>
-      )}
+    <div className="space-y-7">
       <div>
-        <p className="label">Preço (R$)</p>
+        <p className="flabel">Preço (R$)</p>
         <div className="flex items-center gap-2">
-          <input className="input" inputMode="numeric" placeholder="Mín" value={min} onChange={e => set('min', e.target.value.replace(/\D/g, ''))} />
-          <input className="input" inputMode="numeric" placeholder="Máx" value={max} onChange={e => set('max', e.target.value.replace(/\D/g, ''))} />
+          <input className="field" inputMode="numeric" placeholder="Mín" value={min} onChange={e => set('min', e.target.value.replace(/\D/g, ''))} />
+          <input className="field" inputMode="numeric" placeholder="Máx" value={max} onChange={e => set('max', e.target.value.replace(/\D/g, ''))} />
         </div>
       </div>
       <div>
-        <p className="label">Tamanho</p>
+        <p className="flabel">Tamanho</p>
         <div className="flex flex-wrap gap-2">
           {allSizes.map(s => (
-            <button key={s} onClick={() => set('tamanho', size === s ? '' : s)} className={`min-w-11 border px-3 py-2 text-xs font-semibold transition-colors ${size === s ? 'border-white bg-white text-black' : 'border-white/15 hover:border-white/60'}`}>{s}</button>
+            <button key={s} onClick={() => set('tamanho', size === s ? '' : s)} aria-pressed={size === s}
+              className={`flex h-11 min-w-11 items-center justify-center rounded-full px-3 text-sm font-bold transition-colors ${size === s ? 'bg-charcoal text-white' : 'bg-soft hover:bg-black/10'}`}>{s}</button>
           ))}
         </div>
       </div>
       {allColors.length > 0 && (
         <div>
-          <p className="label">Cor</p>
-          <div className="flex flex-wrap gap-2">
+          <p className="flabel">Cor</p>
+          <div className="flex flex-wrap gap-3">
             {allColors.map(([name, hex]) => (
-              <button key={name} onClick={() => set('cor', color === name ? '' : name)} className={`flex items-center gap-2 border px-3 py-2 text-xs transition-colors ${color === name ? 'border-white bg-white text-black' : 'border-white/15 hover:border-white/60'}`}>
-                {hex && <span className="h-3 w-3 rounded-full border border-white/30" style={{ background: hex }} />}{name}
-              </button>
+              <button key={name} title={name} aria-label={name} aria-pressed={color === name} onClick={() => set('cor', color === name ? '' : name)}
+                className={`h-9 w-9 rounded-full border border-black/10 transition-all ${color === name ? 'ring-2 ring-charcoal ring-offset-2' : ''}`} style={{ background: hex ?? '#ccc' }} />
             ))}
           </div>
         </div>
       )}
-      {hasFilters && <button className="text-xs uppercase tracking-widest text-mute underline hover:text-white" onClick={() => setParams({}, { replace: true })}>Limpar filtros</button>}
+      {hasFilters && <button className="text-sm font-semibold text-sub underline hover:text-txt" onClick={() => setParams({}, { replace: true })}>Limpar filtros</button>}
     </div>
   )
 
   return (
-    <div className="container-x py-10 md:py-14">
-      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+    <div className="container-x py-6 md:py-10">
+      <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="h-display text-4xl md:text-6xl">{title}</h1>
-          {!loading && <p className="mt-2 text-sm text-mute">{results.length} {results.length === 1 ? 'produto' : 'produtos'}</p>}
+          <h1 className="title text-4xl md:text-6xl">{title}</h1>
+          {!loading && !needsSetup && <p className="mt-2 text-sm text-sub">{results.length} {results.length === 1 ? 'produto' : 'produtos'}</p>}
         </div>
-        <div className="flex items-center gap-3">
-          <button className="btn-outline !py-3 lg:hidden" onClick={() => setPanel(true)}><SlidersHorizontal size={14} /> Filtros</button>
-          {!mode || mode === 'promocoes' ? (
-            <select aria-label="Ordenar" className="input !w-auto" value={sort} onChange={e => set('ordem', e.target.value)}>
+        <div className="flex items-center gap-2">
+          <button className="pill-light !py-3 lg:hidden" onClick={() => setPanel(true)}><SlidersHorizontal size={15} /> Filtros</button>
+          {(!mode || mode === 'promocoes') && (
+            <select aria-label="Ordenar" className="field !w-auto !rounded-full !py-3 pr-8 font-semibold" value={sort} onChange={e => set('ordem', e.target.value)}>
               <option value="recentes">Mais recentes</option>
               <option value="menor">Menor preço</option>
               <option value="maior">Maior preço</option>
             </select>
-          ) : null}
+          )}
         </div>
       </div>
 
-      <div className="grid gap-10 lg:grid-cols-[240px_1fr]">
-        <aside className="hidden lg:block">{Filters}</aside>
+      {!mode && categories.length > 0 && (
+        <div className="no-scrollbar -mx-4 mt-6 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+          <Link to="/loja" className={`chip ${!cat ? 'chip-on' : ''}`}>Todas</Link>
+          {categories.map(c => <Link key={c.id} to={`/categoria/${c.slug}`} className={`chip ${cat?.id === c.id ? 'chip-on' : ''}`}>{c.name}</Link>)}
+        </div>
+      )}
+
+      <div className="mt-6 grid gap-8 lg:grid-cols-[250px_1fr]">
+        <aside className="hidden lg:block"><div className="surface sticky top-24 p-6">{Filters}</div></aside>
         <div>
           {needsSetup && <SetupNotice />}
           {error && <Notice title="Erro ao carregar produtos">{error}</Notice>}
@@ -135,19 +134,19 @@ export default function Shop({ mode }: { mode?: Mode }) {
           {!loading && !error && !needsSetup && results.length === 0 && (
             <EmptyState title="Nenhum produto encontrado" text={hasFilters ? 'Tente remover alguns filtros.' : 'Ainda não há produtos nesta seção.'} />
           )}
-          <div className="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 xl:grid-cols-4">
-            {results.map(p => <ProductCard key={p.id} p={p} />)}
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-4">
+            {results.map((p, i) => <Reveal key={p.id} delay={(i % 4) * 70}><ProductCard p={p} /></Reveal>)}
           </div>
         </div>
       </div>
 
       {panel && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-black/70" onClick={() => setPanel(false)} />
-          <div className="absolute bottom-0 max-h-[85vh] w-full overflow-y-auto bg-ink p-6">
-            <div className="mb-6 flex items-center justify-between"><h2 className="font-display text-lg uppercase">Filtros</h2><button aria-label="Fechar" onClick={() => setPanel(false)}><X size={22} /></button></div>
+        <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label="Filtros">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setPanel(false)} />
+          <div className="slide-up absolute bottom-0 max-h-[85vh] w-full overflow-y-auto rounded-t-4xl bg-paper p-6 pb-8">
+            <div className="mb-6 flex items-center justify-between"><h2 className="text-xl font-extrabold">Filtros</h2><button aria-label="Fechar" className="flex h-10 w-10 items-center justify-center rounded-full bg-white" onClick={() => setPanel(false)}><X size={20} /></button></div>
             {Filters}
-            <button className="btn-light mt-8 w-full" onClick={() => setPanel(false)}>Ver {results.length} produtos</button>
+            <button className="pill-dark mt-8 w-full" onClick={() => setPanel(false)}>Ver {results.length} {results.length === 1 ? 'produto' : 'produtos'}</button>
           </div>
         </div>
       )}

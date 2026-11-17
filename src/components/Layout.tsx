@@ -11,7 +11,7 @@ export default function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1"><Outlet /></main>
+      <main key={pathname} className="page-in flex-1 pb-6"><Outlet /></main>
       <Footer />
       <CartDrawer />
       <WhatsAppFab />

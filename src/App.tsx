@@ -8,7 +8,7 @@ import CartPage from './pages/CartPage'
 import CheckoutPage from './pages/CheckoutPage'
 import ContactPage from './pages/ContactPage'
 import NotFound from './pages/NotFound'
-
+import PrivacyPage from './pages/PrivacyPage'
 const AdminApp = lazy(() => import('./admin/AdminApp'))
 
 export default function App() {
@@ -25,7 +25,7 @@ export default function App() {
         <Route path="sacola" element={<CartPage />} />
         <Route path="finalizar" element={<CheckoutPage />} />
         <Route path="contato" element={<ContactPage />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="privacidade" element={<PrivacyPage />} />        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   )

@@ -16,19 +16,19 @@ export default function ContactPage() {
   ].filter(Boolean) as { icon: typeof Mail; label: string; text: string; href: string }[]
 
   return (
-    <div className="container-x max-w-3xl py-12 md:py-20">
-      <h1 className="h-display text-4xl md:text-6xl">Contato</h1>
-      <p className="mt-4 text-white/70">{settings.tagline} Fale com a gente — atendimento online.</p>
-      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+    <div className="container-x max-w-3xl py-8 md:py-14">
+      <h1 className="title text-4xl md:text-6xl">Contato</h1>
+      <p className="mt-3 text-txt/70">{settings.tagline} Fale com a gente — atendimento online.</p>
+      <div className="mt-8 grid gap-3 sm:grid-cols-2">
         {rows.map(r => {
           const I = r.icon
-          const inner = (<><I size={22} /><p className="mt-4 text-xs uppercase tracking-widest text-mute">{r.label}</p><p className="mt-1 font-semibold">{r.text}</p></>)
+          const inner = (<><span className="flex h-12 w-12 items-center justify-center rounded-full bg-charcoal text-white"><I size={20} /></span><p className="mt-5 text-xs font-semibold text-sub">{r.label}</p><p className="mt-0.5 font-bold">{r.text}</p></>)
           return r.href
-            ? <a key={r.label} href={r.href} target="_blank" rel="noreferrer" className="card p-6 transition-colors hover:border-white/40">{inner}</a>
-            : <div key={r.label} className="card p-6">{inner}</div>
+            ? <a key={r.label} href={r.href} target="_blank" rel="noreferrer" className="surface p-6 transition-shadow hover:shadow-xl">{inner}</a>
+            : <div key={r.label} className="surface p-6">{inner}</div>
         })}
       </div>
-      {rows.length === 0 && <p className="mt-10 text-sm text-mute">Os canais de contato ainda não foram configurados.</p>}
+      {rows.length === 0 && <p className="mt-10 text-sm text-sub">Os canais de contato ainda não foram configurados.</p>}
     </div>
   )
 }

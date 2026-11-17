@@ -151,6 +151,7 @@ export default function ProductForm() {
 
       <section className="card p-5">
         <h2 className="label">Fotos (a primeira é a principal)</h2>
+        <p className="mt-1 text-xs text-mute">Dica 360°: com 3 ou mais fotos tiradas em sequência ao redor da peça (frente, lado, costas, outro lado…), a loja libera o botão &quot;Ver ao redor&quot;, em que o cliente arrasta para girar. Quanto mais fotos, mais suave.</p>
         <div className="mt-3 flex flex-wrap gap-3">
           {images.map((u, i) => (
             <div key={u} className="group relative h-28 w-24 bg-graphite">

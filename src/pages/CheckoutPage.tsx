@@ -27,7 +27,7 @@ export default function CheckoutPage() {
   const up = (k: keyof Checkout) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF(s => ({ ...s, [k]: e.target.value }))
 
   if (items.length === 0 && !sentLink) {
-    return <div className="container-x py-28 text-center"><h1 className="h-display text-3xl">Sua sacola está vazia</h1><Link to="/loja" className="btn-light mt-6">Ir para a loja</Link></div>
+    return <div className="container-x py-24 text-center"><h1 className="title text-3xl">Sua sacola está vazia</h1><Link to="/loja" className="pill-dark mt-6">Ir para a loja</Link></div>
   }
 
   const submit = (e: FormEvent) => {
@@ -57,36 +57,36 @@ export default function CheckoutPage() {
 
   if (sentLink) {
     return (
-      <div className="container-x max-w-xl py-20 text-center">
-        <MessageCircle size={40} className="mx-auto mb-4" />
-        <h1 className="h-display text-3xl">Abrimos o WhatsApp</h1>
-        <p className="mt-4 text-sm text-white/70">
+      <div className="container-x max-w-xl py-16 text-center">
+        <span className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-charcoal text-white"><MessageCircle size={34} /></span>
+        <h1 className="title mt-6 text-3xl">Abrimos o WhatsApp</h1>
+        <p className="mt-4 text-sm text-txt/70">
           Para concluir, <strong>envie a mensagem</strong> com o resumo do pedido na conversa que abriu. O pedido só é considerado recebido
           depois que a mensagem for enviada, e será <strong>confirmado pela loja</strong>.
         </p>
         <div className="mt-8 flex flex-col gap-3">
-          <a href={sentLink} target="_blank" rel="noreferrer" className="btn-light">Abrir o WhatsApp novamente</a>
-          <button className="btn-outline" onClick={() => { clear(); setSentLink('') }}>Já enviei — esvaziar sacola</button>
-          <Link to="/sacola" className="text-xs uppercase tracking-widest text-mute underline" onClick={() => setSentLink('')}>Voltar à sacola</Link>
+          <a href={sentLink} target="_blank" rel="noreferrer" className="pill-dark">Abrir o WhatsApp novamente</a>
+          <button className="pill-light" onClick={() => { clear(); setSentLink('') }}>Já enviei — esvaziar sacola</button>
+          <Link to="/sacola" className="text-xs font-semibold text-sub underline" onClick={() => setSentLink('')}>Voltar à sacola</Link>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="container-x py-10 md:py-14">
-      <h1 className="h-display mb-8 text-4xl md:text-6xl">Finalizar pedido</h1>
-      <form onSubmit={submit} className="grid gap-10 lg:grid-cols-[1fr_380px]">
-        <div className="space-y-5">
-          <p className="text-sm text-mute">Sem cadastro. Ao finalizar, abriremos o WhatsApp da loja com o resumo completo do pedido.</p>
-          <div><label className="label" htmlFor="name">Nome completo</label><input id="name" className="input" required autoComplete="name" value={f.name} onChange={up('name')} /></div>
-          <div><label className="label" htmlFor="phone">Telefone / WhatsApp</label><input id="phone" className="input" required inputMode="tel" autoComplete="tel" placeholder="(91) 90000-0000" value={f.phone} onChange={up('phone')} /></div>
+    <div className="container-x py-6 md:py-10">
+      <h1 className="title mb-6 text-4xl md:text-5xl">Finalizar pedido</h1>
+      <form onSubmit={submit} className="grid gap-6 lg:grid-cols-[1fr_380px]">
+        <div className="surface space-y-5 p-5 sm:p-7">
+          <p className="text-sm text-sub">Sem cadastro. Ao finalizar, abriremos o WhatsApp da loja com o resumo completo do pedido.</p>
+          <div><label className="flabel" htmlFor="name">Nome completo</label><input id="name" className="field !bg-paper" required autoComplete="name" value={f.name} onChange={up('name')} /></div>
+          <div><label className="flabel" htmlFor="phone">Telefone / WhatsApp</label><input id="phone" className="field !bg-paper" required inputMode="tel" autoComplete="tel" placeholder="(91) 90000-0000" value={f.phone} onChange={up('phone')} /></div>
 
           <fieldset>
-            <legend className="label">Forma de recebimento</legend>
+            <legend className="flabel">Forma de recebimento</legend>
             <div className="grid grid-cols-2 gap-3">
               {(['entrega', 'retirada'] as const).map(m => (
-                <label key={m} className={`cursor-pointer border p-4 text-center text-sm font-semibold uppercase tracking-widest transition-colors ${f.method === m ? 'border-white bg-white text-black' : 'border-white/15 hover:border-white/50'}`}>
+                <label key={m} className={`cursor-pointer rounded-full p-3.5 text-center text-sm font-bold transition-colors ${f.method === m ? 'bg-charcoal text-white' : 'bg-paper hover:bg-soft'}`}>
                   <input type="radio" name="method" className="sr-only" checked={f.method === m} onChange={() => setF(s => ({ ...s, method: m }))} />
                   {m === 'entrega' ? 'Entrega' : 'Retirada'}
                 </label>
@@ -95,28 +95,29 @@ export default function CheckoutPage() {
           </fieldset>
 
           <div className="grid gap-5 sm:grid-cols-2">
-            <div><label className="label" htmlFor="city">Cidade</label><input id="city" className="input" required value={f.city} onChange={up('city')} /></div>
-            {delivery && <div><label className="label" htmlFor="nb">Bairro</label><input id="nb" className="input" required value={f.neighborhood} onChange={up('neighborhood')} /></div>}
+            <div><label className="flabel" htmlFor="city">Cidade</label><input id="city" className="field !bg-paper" required value={f.city} onChange={up('city')} /></div>
+            {delivery && <div><label className="flabel" htmlFor="nb">Bairro</label><input id="nb" className="field !bg-paper" required value={f.neighborhood} onChange={up('neighborhood')} /></div>}
           </div>
-          {delivery && <div><label className="label" htmlFor="addr">Endereço (rua, número, complemento)</label><input id="addr" className="input" required autoComplete="street-address" value={f.address} onChange={up('address')} /></div>}
-          <div><label className="label" htmlFor="obs">Observações</label><textarea id="obs" rows={3} className="input" value={f.notes} onChange={up('notes')} /></div>
-          {err && <p role="alert" className="text-sm text-red-400">{err}</p>}
+          {delivery && <div><label className="flabel" htmlFor="addr">Endereço (rua, número, complemento)</label><input id="addr" className="field !bg-paper" required autoComplete="street-address" value={f.address} onChange={up('address')} /></div>}
+          <div><label className="flabel" htmlFor="obs">Observações</label><textarea id="obs" rows={3} className="field !bg-paper" value={f.notes} onChange={up('notes')} /></div>
+          {err && <p role="alert" className="text-sm font-semibold text-red-600">{err}</p>}
         </div>
 
-        <aside className="card h-fit space-y-3 p-6 lg:sticky lg:top-28">
-          <h2 className="font-display text-lg uppercase">Resumo</h2>
-          <ul className="space-y-2 border-b border-white/10 pb-3 text-sm">
+        <aside className="surface h-fit space-y-3 p-6 lg:sticky lg:top-24">
+          <h2 className="text-lg font-extrabold">Resumo</h2>
+          <ul className="space-y-2 border-b border-black/5 pb-3 text-sm">
             {items.map(i => (
-              <li key={i.key} className="flex justify-between gap-3"><span className="text-white/80">{i.qty}× {i.name} <span className="text-mute">({i.size}/{i.color})</span></span><span>{brl(i.price * i.qty)}</span></li>
+              <li key={i.key} className="flex justify-between gap-3"><span>{i.qty}× {i.name} <span className="text-sub">({i.size}/{i.color})</span></span><span className="font-semibold">{brl(i.price * i.qty)}</span></li>
             ))}
           </ul>
-          <div className="flex justify-between text-sm"><span className="text-mute">Subtotal</span><span>{brl(subtotal)}</span></div>
-          {discount > 0 && <div className="flex justify-between text-sm"><span className="text-mute">Desconto</span><span className="text-emerald-400">-{brl(discount)}</span></div>}
-          {delivery && <div className="flex justify-between text-sm"><span className="text-mute">Frete</span><span>{shipping > 0 ? brl(shipping) : settings.shipping_fee > 0 ? 'Grátis' : 'A combinar'}</span></div>}
-          <div className="flex justify-between border-t border-white/10 pt-3 text-lg font-bold"><span>Total</span><span>{brl(grand)}</span></div>
-          {!number && <p className="text-xs text-red-400">Número de WhatsApp da loja ainda não configurado.</p>}
-          <button type="submit" className="btn-light w-full" disabled={!number}><MessageCircle size={16} /> Enviar pedido pelo WhatsApp</button>
-          <p className="text-[11px] text-mute">O pedido será confirmado pela loja após o envio da mensagem. Não há pagamento online neste site.</p>
+          <div className="flex justify-between text-sm"><span className="text-sub">Subtotal</span><span>{brl(subtotal)}</span></div>
+          {discount > 0 && <div className="flex justify-between text-sm"><span className="text-sub">Desconto</span><span className="font-semibold text-emerald-600">-{brl(discount)}</span></div>}
+          {delivery && <div className="flex justify-between text-sm"><span className="text-sub">Frete</span><span>{shipping > 0 ? brl(shipping) : settings.shipping_fee > 0 ? 'Grátis' : 'A combinar'}</span></div>}
+          <div className="flex justify-between border-t border-black/5 pt-3 text-lg font-extrabold"><span>Total</span><span>{brl(grand)}</span></div>
+          {!number && <p className="text-xs font-semibold text-red-600">Número de WhatsApp da loja ainda não configurado.</p>}
+          <button type="submit" className="pill-dark w-full !py-4" disabled={!number}><MessageCircle size={17} /> Enviar pedido pelo WhatsApp</button>
+          <p className="text-[11px] text-sub">O pedido será confirmado pela loja após o envio da mensagem. Não há pagamento online neste site.</p>
+          <p className="text-[11px] text-sub">Ao enviar, você concorda com o uso dos seus dados para atender o pedido, conforme a <Link to="/privacidade" className="font-semibold underline">Política de Privacidade</Link>.</p>
         </aside>
       </form>
     </div>

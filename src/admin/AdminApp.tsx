@@ -28,7 +28,7 @@ function Login() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-ink p-4">
       <form onSubmit={submit} className="card w-full max-w-sm space-y-4 p-8">
-        <img src="/logo.png" alt="JP STORE" className="mx-auto h-16 w-16 rounded-sm" />
+        <img src="/logo.png" alt="JP STORE" className="mx-auto h-16 w-auto" />
         <h1 className="text-center font-display text-xl uppercase">Painel administrativo</h1>
         <div><label className="label" htmlFor="em">E-mail</label><input id="em" type="email" required className="input" autoComplete="username" value={email} onChange={e => setEmail(e.target.value)} /></div>
         <div><label className="label" htmlFor="pw">Senha</label><input id="pw" type="password" required className="input" autoComplete="current-password" value={pw} onChange={e => setPw(e.target.value)} /></div>
@@ -49,7 +49,12 @@ const nav = [
   ['/admin/configuracoes', 'Configurações', Settings, false],
 ] as const
 
+// O painel mantém o tema escuro, independente do tema claro da loja.
 export default function AdminApp() {
+  return <div className="min-h-screen bg-ink text-white"><AdminInner /></div>
+}
+
+function AdminInner() {
   useSEO('Painel administrativo')
   const { session, isAdmin, loading, signOut } = useAuth()
 
@@ -70,7 +75,7 @@ export default function AdminApp() {
     <div className="min-h-screen bg-ink md:flex">
       <aside className="border-b border-white/10 bg-black md:sticky md:top-0 md:h-screen md:w-60 md:shrink-0 md:border-b-0 md:border-r">
         <div className="flex items-center gap-2 p-4 md:p-5">
-          <img src="/logo.png" alt="" className="h-9 w-9 rounded-sm" />
+          <img src="/logo.png" alt="" className="h-9 w-auto" />
           <div><p className="font-display text-sm leading-none">JP STORE</p><p className="text-[10px] uppercase tracking-widest text-mute">Admin</p></div>
         </div>
         <nav className="flex gap-1 overflow-x-auto px-3 pb-3 md:flex-col md:overflow-visible md:pb-0">

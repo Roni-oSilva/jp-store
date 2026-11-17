@@ -31,7 +31,7 @@ export function useSEO(title: string, description?: string, image?: string) {
     setMeta('property', 'og:title', full)
     setMeta('property', 'og:description', desc)
     setMeta('property', 'og:url', window.location.href)
-    setMeta('property', 'og:image', image || `${window.location.origin}/logo.png`)
+    setMeta('property', 'og:image', image || `${window.location.origin}/og-image.png`)
     setMeta('name', 'twitter:card', 'summary_large_image')
   }, [title, description, image])
 }
