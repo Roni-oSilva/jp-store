@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { scroll-behavior: smooth; }
+body { @apply bg-ink text-white font-sans antialiased; }
+::selection { background: #fff; color: #000; }
+
+@layer components {
+  .container-x { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
+  .btn { @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 text-xs font-bold uppercase tracking-[0.18em] transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed; }
+  .btn-light { @apply btn bg-white text-black hover:bg-neutral-200; }
+  .btn-outline { @apply btn border border-white/40 text-white hover:bg-white hover:text-black; }
+  .btn-dark { @apply btn bg-black text-white border border-white/10 hover:bg-white hover:text-black; }
+  .input { @apply w-full bg-graphite border border-white/10 px-4 py-3 text-sm text-white placeholder:text-mute focus:outline-none focus:border-white/60 transition-colors; }
+  .label { @apply block text-[11px] font-semibold uppercase tracking-widest text-mute mb-1.5; }
+  .h-display { @apply font-display uppercase leading-[0.95] tracking-tight; }
+  .card { @apply bg-graphite border border-white/5; }
+}
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+.fade-up { animation: fadeUp .7s ease both; }
+@keyframes slideIn { from { transform: translateX(100%); } to { transform: none; } }
+.slide-in { animation: slideIn .3s ease both; }
+.skeleton { background: linear-gradient(90deg, #1c1c1e 25%, #2a2a2d 50%, #1c1c1e 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
+@keyframes shimmer { to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
